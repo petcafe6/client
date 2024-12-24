@@ -1,0 +1,49 @@
+{
+  "background_color": "#070718",
+  "description": "PetCafe Social Platform",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "PetCafe",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "short_name": "PetCafe",
+  "start_url": "/",
+  "theme_color": "#a82925",
+  "prefer_related_applications": false,
+  "display_override": [
+    "window-controls-overlay",
+    "standalone",
+    "fullscreen"
+  ],
+  "launch_handler": {
+    "client_mode": [
+      "focus-existing",
+      "auto"
+    ]
+  },
+  "icons": [
+    {
+      "src": "img/icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "img/screenshot01.jpg",
+      "sizes": "600x700",
+      "type": "image/jpg"
+    }
+  ],
+  "id": "/",
+  "lang": "en",
+  "categories": [
+    "business",
+    "finance",
+    "productivity"
+  ],
+  "edge_side_panel": {
+    "preferred_width": 600
+  }
+}
