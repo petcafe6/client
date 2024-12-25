@@ -12,23 +12,66 @@ import CustomLink from '@/components/custom-link'
 import { Textarea } from '@/components/ui/textarea'
 import { Switch } from '@/components/ui/switch'
 import { UserType } from '@/types/UserType'
+import { ArrowLeftIcon, Check, CheckIcon, EditIcon, ImageUpIcon, UploadIcon, XIcon } from 'lucide-react'
+import { ImageResizeFitType, uploadMultiToS3AliAbi, uploadSingleToS3AliAbi } from '@/lib/s3BucketHelper'
+import { useToast } from '@/components/ui/use-toast'
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 export default function MeEditPage() {
   const router = useRouter()
   const [token, setToken] = useState('')
   const [user, setUser] = useState<UserType>({})
   const [newLink, setNewLink] = useState('')
+  const { toast } = useToast()
+  const [loading, setLoading] = useState(false)
+  const [usernameErr, setUsernameErr] = useState(false)
+  const [newUsername, setNewUsername] = useState('')
+  // const [photoFileObject, setPhotoFileObject] = useState<FileList | null>(null)
+  const [image, setImage] = useState<string[] | []>([])
 
   const save = () => {
+    if (newUsername && usernameErr) {
+      alert('username error.')
+      return
+    }
+    if (newUsername && newUsername != user.username) {
+      user.username = newUsername
+      setUser({ ...user, username: newUsername })
+    }
+    console.log('user.username:', user.username)
     postItem('/me', token, user)
       .then(result => {
-        console.log('autoSave result:', result)
         Cookies.set('user', JSON.stringify(result))
         router.replace('/me')
       })
-      .catch(err => console.log(err))
+      .catch(err => toast({ description: err || 'error', variant: 'destructive' }))
+
   }
 
+  const photoInputHandler = async (photoFileObject?: FileList) => {
+    if (photoFileObject && token) {
+      setLoading(true)
+      uploadMultiToS3AliAbi(photoFileObject, "profiles/", ImageResizeFitType.contain, token)
+        .then(result => {
+          if (result.success) {
+            setUser({ ...user, profilePicture: result.data[0]._id })
+          } else {
+            toast({ description: result.error || 'error', variant: 'destructive' })
+          }
+          console.log(result)
+        })
+        .catch(err => toast({ description: err || 'error', variant: 'destructive' }))
+        .finally(() => setLoading(false))
+    }
+  }
   useEffect(() => {
     if (!token) setToken(Cookies.get('token') || '')
   }, [])
@@ -41,117 +84,122 @@ export default function MeEditPage() {
   }, [token])
   return (<>
     {user && <>
-
-      <div className="w-fu11ll m11ax-w-3xl mx-auto py-8 px-0 md:px-6">
-        <div className="flex items-center gap-4 mb-6">
-          <Avatar className="h-24 w-24">
-            <AvatarImage src={user.image || '/placeholder-user.jpg'} alt="@shadcn" />
-            <AvatarFallback>{user.fullName}</AvatarFallback>
-          </Avatar>
-          <div>
-            <div className='flex flex-row gap-2'>
-              <Input className="text-2xl font-bold" defaultValue={user.firstName} onChange={e => setUser({ ...user, firstName: e.target.value })} />
-              <Input className="text-2xl font-bold" defaultValue={user.lastName} onChange={e => setUser({ ...user, lastName: e.target.value })} />
-            </div>
-
-            <Input defaultValue={user.title} onChange={e => setUser({ ...user, title: e.target.value })} />
-          </div>
-        </div>
-        <div className="grid gap-8">
-          <div>
-            <h2 className="text-lg font-semibold mb-2">About</h2>
-            <p className="text-muted-foreground">
-              <Textarea defaultValue={user.bio} onChange={e => setUser({ ...user, bio: e.target.value })} />
-            </p>
-          </div>
-          <div>
-            <h2 className="text-lg font-semibold mb-2">Contact</h2>
-            <div className="grid gap-2">
-              <div className="flex items-center gap-2">
-                <i className="fa-solid fa-envelope h-5 w-5 text-muted-foreground" ></i>
-                <Input type='email' defaultValue={user.email} onChange={e => setUser({ ...user, email: e.target.value })} />
-              </div>
-              <div className="flex items-center gap-2">
-                <i className="fa-solid fa-phone h-5 w-5 text-muted-foreground" />
-                <Input type='tel' className="" defaultValue={user.phoneNumber} onChange={e => setUser({ ...user, phoneNumber: e.target.value })} />
-              </div>
-              {user.links && user.links.map((e: string, index: number) => <>
-                <div key={`user-link-${index}`} className="grid grid-cols-6 items-center space-y-4">
-
-                  <div className="col-span-5 md:col-span-4 flex items-center gap-2">
-                    <i className="fa-solid fa-link h-5 w-5 text-muted-foreground" />
-                    <CustomLink href={e} >
-                      {e.includes('//') ? e.split('//')[1] : e}
-                    </CustomLink>
-                  </div>
-                  <Button className='h-8 w-8 text-red-700 pt-3' variant={'outline'}
-                    onClick={() => {
-                      user.links && user.links.splice(index, 1)
-                      setUser({ ...user, links: user.links })
-                    }}
-                  >
-                    <i className="fa-solid fa-trash-can w-5 h-5" />
-                  </Button>
-                </div>
-              </>)}
-              <div className="grid grid-cols-6 items-center mt-4 gap-4">
-
-                <div className="col-span-5 md:col-span-4 flex items-center gap-2">
-                  <i className="fa-solid fa-link  text-muted-foreground" />
-                  <Input value={newLink} onChange={e => setNewLink(e.target.value)} />
-                </div>
-                <Button className='h-8 w-8 m11s-2 bg-pri11mary text-primary-foreground' variant={'ghost'}
-                  onClick={() => {
-                    if (newLink) {
-                      user.links && user.links.push(newLink)
-                      setUser({ ...user, links: user.links })
-                      setNewLink('')
+      <div className="w-full m11ax-w-3xl ">
+        <div className="w-full flex justify-between items-start gap-2">
+          <div className='relative'>
+            <Avatar className="h-20 w-20">
+              <AvatarImage src={image && image.length > 0 ? image[0] : user.profilePicture || '/placeholder-user.jpg'} alt="profilePicture" />
+            </Avatar>
+            <div className='absolute bottom-[-16px] start-6 w-8 h-8'>
+              <label
+                htmlFor="file-upload"
+                className="relative cursor-pointer  rounded-md font-medium text-primary-6000 hover:text-primary-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-primary-500"
+              >
+                <ImageUpIcon width={32} height={32} />
+                <input
+                  id="file-upload"
+                  name="file-upload"
+                  type="file"
+                  className="sr-only"
+                  disabled={loading}
+                  accept="image/*"
+                  multiple={false}
+                  onChange={(e) => {
+                    if (e.target.files) {
+                      photoInputHandler(e.target.files)
+                      const imageUrls = Array.from(
+                        e.target.files
+                      ).map((file) => URL.createObjectURL(file))
+                      setImage(imageUrls)
                     }
                   }}
-                >
-                  <i className="fa-solid fa-square-plus text-xl" />
-                </Button>
-              </div>
+                />
+              </label>
 
             </div>
+          </div>
+          <div className='flex-grow flex flex-col gap-4 text-sm'>
+            <div className='flex flex-row items-center gap-2'>
+              <Input defaultValue={user.username} max={32}
+                onChange={e => setNewUsername(e.target.value)}
+                onBlur={e => {
+                  if (e.target.value != user.username) {
+                    getItem(`/auth/check/username/${e.target.value}`, token)
+                      .then(result => {
+                        if (result.inUse) {
+                          setUsernameErr(true)
+                        } else {
+                          setUsernameErr(false)
+
+                        }
+                      })
+                      .catch(err => toast({ description: err || 'error', variant: 'destructive' }))
+                  }
+                }}
+              />
+              <div className='w-10'>
+                {usernameErr && <XIcon color='red' />}
+                {!usernameErr && <CheckIcon />}
+              </div>
+            </div>
+
+            <Label>{user.email}</Label>
+          </div>
+
+        </div>
+        <div className="flex flex-col mt-8 gap-4">
+          <div>
+            <Label>Name</Label>
+            <Input
+              defaultValue={user.name || ''}
+              onChange={e => setUser({ ...user, name: e.target.value })}
+            />
           </div>
           <div>
-            <h2 className="text-lg font-semibold mb-2">Personal Details</h2>
-            <div className="grid grid-cols-1 gap-2">
-              <div className="flex items-center gap-2">
-                <i className="fa-solid fa-calendar-days h-5 w-5 text-muted-foreground" />
-                <Input type='date' pattern='yyyy-mm-dd' defaultValue={user.dateOfBirth} onChange={e => setUser({ ...user, dateOfBirth: e.target.value })} />
-              </div>
-              <div className="flex items-center gap-2">
-                <i className="fa-solid fa-location-dot h-5 w-5 text-muted-foreground" />
-                <Input defaultValue={user.location} onChange={e => setUser({ ...user, location: e.target.value })} />
-
-              </div>
-              <div className="flex flex-row w-full items-center gap-2">
-                <i className="fa-solid fa-cake-candles h-5 w-5 text-muted-foreground" />
-                <div className="flex items-center gap-4">
-                  <div className='flex flex-row items-center gap-2'>
-                    <Label>Married</Label>
-                    <Switch checked={user.married} onCheckedChange={e => setUser({ ...user, married: e })} />
-                  </div>
-                  <div className='flex flex-row items-center gap-2'>
-                    <Label className='w-20'>Children</Label>
-                    <Input type='number' className='w-20' defaultValue={user.children || 0} onChange={e => setUser({ ...user, children: isNaN(Number(e.target.value)) ? 0 : Number(e.target.value) })} min={0} />
-                  </div>
-                </div>
-              </div>
-            </div>
+            <Label>Bio</Label>
+            <Textarea
+              rows={3}
+              defaultValue={user.bio || ''}
+              onChange={e => setUser({ ...user, bio: e.target.value })}
+            />
           </div>
+          <div>
+            <Label>Gender</Label>
+            <Select
+              value={user.gender || ''}
+              onValueChange={e => setUser({ ...user, gender: e })}
+            >
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="-" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  {/* <SelectLabel>Fruits</SelectLabel> */}
+                  <SelectItem value="-">Prefer not to say</SelectItem>
+                  <SelectItem value="female">Female</SelectItem>
+                  <SelectItem value="male">Male</SelectItem>
+                  <SelectItem value="other">Other</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
 
+          </div>
+          <div>
+            <Label>Date Of Birth</Label>
+            <Input
+              className='w-40'
+              type={'date'}
+              defaultValue={user.dateOfBirth || ''}
+              onChange={e => setUser({ ...user, dateOfBirth: e.target.value })}
+              pattern='yyyy-mm-dd'
+            />
+          </div>
         </div>
-        <div className='w-full flex flex-row justify-end gap-4'>
-          <Button className="text-2xl" variant={'secondary'} onClick={() => router.back()}><i className="fa-solid fa-angle-left"></i>       </Button>
-          <Button className="text-2xl" onClick={save}><i className="fa-solid fa-cloud-arrow-up"></i>        </Button>
-
+        <div className='flex justify-end gap-4 w-full mt-4'>
+          <Button size={'sm'} variant={'secondary'} onClick={() => router.back()} ><ArrowLeftIcon /></Button>
+          <Button size={'sm'} onClick={() => save()} ><CheckIcon /></Button>
         </div>
       </div>
-
-
     </>}
   </>
   )

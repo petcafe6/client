@@ -43,11 +43,11 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
           disableTransitionOnChange
 
         >
-          {/* <Suspense > */}
-          {children}
+          <Suspense >
+            {children}
 
-          {/* <Toaster /> */}
-          {/* </Suspense> */}
+            <Toaster />
+          </Suspense>
         </ThemeProvider>
 
       </body>

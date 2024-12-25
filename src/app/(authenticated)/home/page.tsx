@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input'
 import { Bookmark, Heart, MessageCircle, Send } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
+import { useRouter } from 'next/navigation'
 
 
 export default function Home() {
@@ -57,6 +58,7 @@ function Feed() {
     { id: 1, user: { username: 'johndoe', avatar: '/img/avatar-place-holder.png' }, image: '/img/intro-pets.png?height=600&width=600', likes: 42, caption: 'Beautiful day! #sunshine', comments: [{ username: 'janedoe', text: 'Looks amazing!' }] },
     { id: 2, user: { username: 'janedoe', avatar: '/img/avatar-place-holder.png' }, image: '/img/intro-pets.png?height=600&width=600', likes: 28, caption: 'Delicious meal 😋', comments: [{ username: 'johndoe', text: 'Yum!' }] },
   ]
+  const roter = useRouter()
 
   return (
     <div className="space-y-8 mt-8">

@@ -5,9 +5,8 @@ export interface UserType {
   phoneNumber?: string
   role?: string
   passive?: boolean
-  title?: string
   name?: string
-  gender?: '' | 'male' | 'female' | 'other'
+  gender?: string | undefined | '-' | 'male' | 'female' | 'other'
   dateOfBirth?: string
   profilePicture?: any
   bio?: string
