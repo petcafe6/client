@@ -10,7 +10,6 @@ export interface PetType {
   gender?: string | 'male' | 'female'
   idNumber?: string
   images?: string[]
-  listImage?: string
   medicalRecords?: MedicalRecordType[]
 }
 

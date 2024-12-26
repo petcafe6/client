@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/tabs"
 import { Card, CardHeader, CardTitle } from '@/components/ui/card'
 import { MyPetList } from './pets/my-pet-list'
+import { MyPostList } from './posts/my-post-list'
 
 export default function MePage() {
   const [token, setToken] = useState('')
@@ -97,8 +98,8 @@ export function MeTabs() {
       </TabsList>
       <TabsContent value="posts">
         <h3>Posts</h3>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa, sequi natus, architecto harum eum enim at autem error magni iste dolores mollitia assumenda, accusantium accusamus quaerat? Dolore, aut! Explicabo, iste!</p>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla cupiditate similique consequatur explicabo sit dolore, corrupti quam, pariatur dignissimos quaerat iste, officiis ipsum. Modi itaque reprehenderit fuga, a laborum blanditiis!</p>
+        <Button onClick={() => router.push('/me/posts/addnew')}>Yeni Post</Button>
+        <MyPostList />
       </TabsContent>
       <TabsContent value="pets">
         <h3>My Pets</h3>

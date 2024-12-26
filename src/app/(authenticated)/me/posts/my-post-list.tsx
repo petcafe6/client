@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { getItem } from '@/lib/fetch'
 import { useRouter } from 'next/navigation'
 import Cookies from 'js-cookie'
-import { PetType } from '@/types/PetType'
+import { PostType } from '@/types/PostType'
 import { useToast } from '@/components/ui/use-toast'
 import { Button } from '@/components/ui/button'
 import { Edit2Icon, EditIcon } from 'lucide-react'
@@ -21,8 +21,8 @@ import Loading from '@/components/loading'
 import { s3ImageUrl } from '@/lib/utils'
 interface Props {
 }
-export function MyPetList({ }: Props) {
-  const [list, setList] = useState<PetType[]>([])
+export function MyPostList({ }: Props) {
+  const [list, setList] = useState<PostType[]>([])
   const [token, setToken] = useState('')
   const { toast } = useToast()
   const [loading, setLoading] = useState(false)
@@ -30,9 +30,9 @@ export function MyPetList({ }: Props) {
 
   const load = () => {
     setLoading(true)
-    getItem(`/myPets`, token)
+    getItem(`/myPosts`, token)
       .then(result => {
-        setList(result.docs as PetType[])
+        setList(result.docs as PostType[])
       })
       .catch(err => toast({ title: 'Error', description: err || '', variant: 'destructive' }))
       .finally(() => setLoading(false))
@@ -47,29 +47,31 @@ export function MyPetList({ }: Props) {
         {list && list.map(e =>
           <Card key={e._id} className="w-full">
             <CardHeader>
-              <CardTitle className='relative'>
-                {e.name}
+              <CardTitle className='relative text-sm md:text-base font-normal'>
+                {e.content}
                 <div className='absolute end-[-16px] top-[-16px]'>
                   <Button size={'icon'} variant={'outline'} onClick={() => router.push(`/me/pets/${e._id}`)} ><EditIcon size={'24px'} /></Button>
                 </div>
               </CardTitle>
-              <CardDescription>
-                <span>{e.type?.toUpperCase()}</span>
-                {e.breed && <span> ({e.breed})</span>}
-                , {e.gender} , {e.age} year(s) old
+              <CardDescription className='text-xs md:text-sm'>
+                <span>{e.location}</span>
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Image
-                src={e.images && e.images.length > 0 ? s3ImageUrl(e.images[0]) : '' || '/img/pet-holder.svg'}
-                width={300}
-                height={300}
-                className='aspect-square object-cover'
-                alt='pet-image'
+              {e.images && e.images.length > 0 &&
+                <Image
+                  src={s3ImageUrl(e.images[0])}
+                  width={300}
+                  height={300}
+                  className='aspect-square object-cover'
+                  alt='post-image'
 
-              />
+                />
+              }
             </CardContent>
-            <CardFooter></CardFooter>
+            <CardFooter className='text-xs md:text-sm'>
+              likes 12 comments 14
+            </CardFooter>
           </Card>
         )}
       </div>
