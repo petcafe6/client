@@ -42,3 +42,16 @@ export function yesterday() {
 export function today() {
   return new Date().toISOString().substring(0, 10)
 }
+
+export function cNumber(val?: any) {
+  return isNaN(Number(val)) ? 0 : Number(val)
+}
+
+export function s3ImageUrl(_id?: string, w?: number) {
+  if (_id?.length == 24) {
+    return `${process.env.NEXT_PUBLIC_API_URI}/s3/image/show/${_id}/${w || 400}`
+  } else {
+    return ''
+  }
+
+}

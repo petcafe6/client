@@ -26,10 +26,6 @@ export default function SignOutButton({ className = '', title = 'Exit' }: SignOu
           Cookies.remove('aliabi.sessionToken')
           Cookies.remove('token')
           Cookies.remove('user')
-          Cookies.remove('db')
-          Cookies.remove('firm')
-          Cookies.remove('period')
-          Cookies.remove('dbList')
           setTimeout(() => {
             router.push('/auth/login')
           }, 300)

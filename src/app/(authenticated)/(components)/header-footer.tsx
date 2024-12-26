@@ -16,7 +16,7 @@ export interface AppLayoutProps {
 export function Header() {
   const router = useRouter()
   return (
-    <header className="sticky top-0 z-10 bg-white  dark:bg-[#070717] border-b">
+    <header className="sticky top-0 z-10 bg-white  dark:bg-[#000] border-b">
       <div className="flex items-center justify-between px-4 py-2 max-w-5xl mx-auto">
         <Link href="/" className=""><HeaderLogo2 /></Link>
         <div className="hidden md:flex items-center space-x-4">
@@ -39,7 +39,7 @@ export function Header() {
 export function Footer() {
   const router = useRouter()
   return (
-    <footer className="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-[#070717] border-t">
+    <footer className="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-[#000] border-t">
       <div className="flex items-center justify-around px-4 py-2">
         <Button variant="ghost" size="icon" onClick={() => router.push('/home')}><Home className="h-6 w-6" /></Button>
         <Button variant="ghost" size="icon" onClick={() => router.push('/search')}><Search className="h-6 w-6" /></Button>

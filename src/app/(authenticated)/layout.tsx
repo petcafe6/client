@@ -29,7 +29,7 @@ const AppLayout: FC<AppLayoutProps> = ({ children }) => {
   // }
 
   return (
-    <div className="flex flex-col min-h-screen  bg-gray-50 dark:bg-[#070717]">
+    <div className="flex flex-col min-h-screen  bg-gray-50 dark:bg-[#000]">
       <Header />
 
       <div className="flex-grow pb-16 md:pb-0 max-w-full overflow-hidden">

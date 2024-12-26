@@ -11,5 +11,7 @@ export interface UserType {
   profilePicture?: any
   bio?: string
   location?: string
-
+  postCount?: number
+  followerCount?: number
+  followingCount?: number
 }

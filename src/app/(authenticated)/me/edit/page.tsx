@@ -29,7 +29,6 @@ export default function MeEditPage() {
   const router = useRouter()
   const [token, setToken] = useState('')
   const [user, setUser] = useState<UserType>({})
-  const [newLink, setNewLink] = useState('')
   const { toast } = useToast()
   const [loading, setLoading] = useState(false)
   const [usernameErr, setUsernameErr] = useState(false)
@@ -195,10 +194,14 @@ export default function MeEditPage() {
             />
           </div>
         </div>
-        <div className='flex justify-end gap-4 w-full mt-4'>
-          <Button size={'sm'} variant={'secondary'} onClick={() => router.back()} ><ArrowLeftIcon /></Button>
-          <Button size={'sm'} onClick={() => save()} ><CheckIcon /></Button>
+        <div className='flex justify-between items-center w-full mt-4'>
+          <Button size={'sm'} variant={'destructive'} onClick={() => router.push('/me/changePassword')} >Change Password</Button>
+          <div className='flex justify-end gap-4'>
+            <Button size={'sm'} variant={'secondary'} onClick={() => router.back()} ><ArrowLeftIcon /></Button>
+            <Button size={'sm'} onClick={() => save()} ><CheckIcon /></Button>
+          </div>
         </div>
+
       </div>
     </>}
   </>
