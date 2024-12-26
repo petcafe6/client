@@ -55,3 +55,22 @@ export function s3ImageUrl(_id?: string, w?: number) {
   }
 
 }
+
+export function relativeTime(date?: string | any) {
+  const rtf = new Intl.RelativeTimeFormat('default', { style: 'short' })
+  const t = new Date(date)
+  let diff = Math.round(new Date().getTime() / 1000) - Math.round(t.getTime() / 1000)
+
+  if (diff < 60) {
+    return rtf.format(diff * -1, 'seconds')
+  } else if (diff >= 60 && diff < 3600) {
+    return rtf.format(Math.floor(diff / 60) * -1, 'minutes')
+  } else if (diff >= 3600 && diff < 86400) {
+    return rtf.format(Math.floor(diff / 3600) * -1, 'hours')
+  } else if (diff >= 86400 && diff < 86400 * 7) {
+    return rtf.format(Math.floor(diff / 86400) * -1, 'days')
+  } else {
+    return rtf.format(Math.floor(diff / (86400 * 7)) * -1, 'weeks')
+  }
+
+}

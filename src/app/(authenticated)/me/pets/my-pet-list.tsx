@@ -49,8 +49,8 @@ export function MyPetList({ }: Props) {
             <CardHeader>
               <CardTitle className='relative'>
                 {e.name}
-                <div className='absolute end-[-16px] top-[-16px]'>
-                  <Button size={'icon'} variant={'outline'} onClick={() => router.push(`/me/pets/${e._id}`)} ><EditIcon size={'24px'} /></Button>
+                <div className='absolute end-[-24px] top-[-24px] cursor-pointer' onClick={() => router.push(`/me/pets/${e._id}`)}>
+                  <EditIcon size={'24px'} />
                 </div>
               </CardTitle>
               <CardDescription>

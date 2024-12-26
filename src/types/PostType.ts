@@ -10,6 +10,7 @@ export interface PostType {
   comments?: CommentType[]
   hashTags?: string[]
   mentions?: UserType[]
+  createdAt?: string
 }
 
 export interface CommentType {

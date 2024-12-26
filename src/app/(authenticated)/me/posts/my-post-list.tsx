@@ -7,7 +7,7 @@ import Cookies from 'js-cookie'
 import { PostType } from '@/types/PostType'
 import { useToast } from '@/components/ui/use-toast'
 import { Button } from '@/components/ui/button'
-import { Edit2Icon, EditIcon } from 'lucide-react'
+import { BookmarkIcon, Edit2Icon, EditIcon, HeartIcon, MessageCircleIcon, Share2Icon } from 'lucide-react'
 import {
   Card,
   CardContent,
@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/card"
 import Image from 'next/image'
 import Loading from '@/components/loading'
-import { s3ImageUrl } from '@/lib/utils'
+import { relativeTime, s3ImageUrl } from '@/lib/utils'
 interface Props {
 }
 export function MyPostList({ }: Props) {
@@ -46,15 +46,16 @@ export function MyPostList({ }: Props) {
       <div className='flex flex-col w-full gap-4'>
         {list && list.map(e =>
           <Card key={e._id} className="w-full">
-            <CardHeader>
+            <CardHeader className='pb-2'>
               <CardTitle className='relative text-sm md:text-base font-normal'>
                 {e.content}
-                <div className='absolute end-[-16px] top-[-16px]'>
-                  <Button size={'icon'} variant={'outline'} onClick={() => router.push(`/me/pets/${e._id}`)} ><EditIcon size={'24px'} /></Button>
+                <div className='absolute end-[-24px] top-[-24px] cursor-pointer' onClick={() => router.push(`/me/posts/${e._id}`)}>
+                  <EditIcon size={'24px'} />
                 </div>
               </CardTitle>
-              <CardDescription className='text-xs md:text-sm'>
+              <CardDescription className='flex justify-between items-center text-xs md:text-sm'>
                 <span>{e.location}</span>
+                <span>{relativeTime(e.createdAt)}</span>
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -69,8 +70,21 @@ export function MyPostList({ }: Props) {
                 />
               }
             </CardContent>
-            <CardFooter className='text-xs md:text-sm'>
-              likes 12 comments 14
+            <CardFooter className='flex flex-col'>
+              <div className='flex justify-between items-center w-full'>
+                <div className='flex justify-start gap-4'>
+                  <div><HeartIcon /></div>
+                  <div><MessageCircleIcon rotate={'180deg'} /></div>
+                  <div><Share2Icon /></div>
+                </div>
+                <div>
+                  <BookmarkIcon />
+                </div>
+              </div>
+              <div className='text-xs md:text-sm'>
+                likes {e.likes?.length} comments {e.comments?.length}
+
+              </div>
             </CardFooter>
           </Card>
         )}
