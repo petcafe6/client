@@ -10,6 +10,7 @@ import { Bookmark, Heart, MessageCircle, Send } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { useRouter } from 'next/navigation'
+import { Feeds } from './feeds'
 
 
 export default function Home() {
@@ -17,7 +18,7 @@ export default function Home() {
   return (
     <div className='flex flex-col gap-4'>
       <StoriesSection />
-      <Feed />
+      <Feeds />
     </div>
   )
 }
@@ -53,7 +54,7 @@ function StoriesSection() {
   )
 }
 
-function Feed() {
+function Feed_eski() {
   const posts = [
     { id: 1, user: { username: 'johndoe', avatar: '/img/avatar-place-holder.png' }, image: '/img/intro-pets.png?height=600&width=600', likes: 42, caption: 'Beautiful day! #sunshine', comments: [{ username: 'janedoe', text: 'Looks amazing!' }] },
     { id: 2, user: { username: 'janedoe', avatar: '/img/avatar-place-holder.png' }, image: '/img/intro-pets.png?height=600&width=600', likes: 28, caption: 'Delicious meal 😋', comments: [{ username: 'johndoe', text: 'Yum!' }] },

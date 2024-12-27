@@ -6,8 +6,8 @@ export interface PostType {
   content?: string
   images?: string[]
   location?: string
-  likes?: UserType[]
-  comments?: CommentType[]
+  likeCount?: number
+  commentCount?: number
   hashtags?: string[]
   mentions?: UserType[]
   createdAt?: string

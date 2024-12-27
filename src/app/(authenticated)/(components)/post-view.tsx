@@ -20,11 +20,13 @@ import Image from 'next/image'
 import { relativeTime, s3ImageUrl } from '@/lib/utils'
 import { ImageCarousel } from './image-carousel'
 import { ButtonShare } from '@/components/button-share'
+import { Avatar, AvatarImage } from '@/components/ui/avatar'
 
 interface Props {
   value: PostType
+  editable?: boolean
 }
-export function PostView({ value }: Props) {
+export function PostView({ value, editable }: Props) {
   const [post, setPost] = useState<PostType>(value)
   const [token, setToken] = useState('')
   const { toast } = useToast()
@@ -35,71 +37,85 @@ export function PostView({ value }: Props) {
   useEffect(() => { !token && setToken(Cookies.get('token') || '') }, [])
 
   return (<>
-    <Card key={post._id} className="w-full">
-      <CardHeader className='pb-2 px-4'>
-        <CardTitle className='relative'>
-          <span className='text-sm md:text-base font-normal text-ellipsis overflow-hid11den line-clamp-3'>
-            {post.content}
-          </span>
-
-          <span className='absolute end-[-16px] top-[-24px] cursor-pointer' onClick={() => router.push(`/me/posts/${post._id}`)}>
-            <EditIcon size={'24px'} />
-          </span>
-        </CardTitle>
-        <CardDescription className='flex justify-between items-center text-xs md:text-sm'>
-          <span className='flex space-x-2'>
-            {post.location && <>
-              <MapPin size={'14px'} /> <span>{post.location}</span>
-            </>}
-          </span>
-          <span>{relativeTime(post.createdAt)}</span>
-        </CardDescription>
-      </CardHeader>
-      <CardContent className='px-2 flex justify-center'>
-        {post.images && post.images.length > 0 && <ImageCarousel images={post.images} />}
-
-      </CardContent>
-      <CardFooter className='flex flex-col'>
-        <div className='flex justify-between items-center w-full'>
-          <div className='flex justify-start gap-4'>
-            <div className='cursor-pointer'
-              onClick={() => {
-                postItem(`/posts/like/${post._id}`, token, {})
-                  .then(result => {
-                    setPost(result as PostType)
-                  })
-                  .catch(err => toast({ description: err || '', duration: 1000, variant: 'destructive' }))
-              }}
-            >
-              {!post.liked && <HeartIcon />}
-              {post.liked && <HeartIcon fill='red' color='red' />}
+    {post &&
+      <Card key={post._id} className="w-full">
+        <CardHeader className='pb-2 px-4'>
+          <div className='flex justify-start items-center space-x-4'>
+            <Avatar className="h-12 w-12">
+              <AvatarImage src={post.author?.profilePicture || '/placeholder-user.jpg'} alt="profilePicture" />
+            </Avatar>
+            <div className='flex flex-col'>
+              <div>{post.author?.name}</div>
             </div>
-            <div><MessageCircleIcon rotate={'180deg'} /></div>
+          </div>
+          <CardTitle className='relative'>
+            <span className='text-sm md:text-base font-normal text-ellipsis overflow-hid11den line-clamp-3'>
+              {post.content}
+            </span>
+
+            {editable &&
+              <span className='absolute end-[-16px] top-[-24px] cursor-pointer' onClick={() => router.push(`/me/posts/${post._id}`)}>
+                <EditIcon size={'24px'} />
+              </span>
+            }
+          </CardTitle>
+          <CardDescription className='flex justify-between items-center text-xs md:text-sm'>
+            <span className='flex space-x-2'>
+              {post.location && <>
+                <MapPin size={'14px'} /> <span>{post.location}</span>
+              </>}
+            </span>
+            <span>
+              {relativeTime(post.createdAt)}
+            </span>
+          </CardDescription>
+        </CardHeader>
+        <CardContent className='px-2 flex justify-center'>
+          {post.images && post.images.length > 0 && <ImageCarousel images={post.images} />}
+
+        </CardContent>
+        <CardFooter className='flex flex-col'>
+          <div className='flex justify-between items-center w-full'>
+            <div className='flex justify-start gap-4'>
+              <div className='cursor-pointer'
+                onClick={() => {
+                  postItem(`/posts/like/${post._id}`, token, {})
+                    .then(result => {
+                      setPost(result as PostType)
+                    })
+                    .catch(err => toast({ description: err || '', duration: 1000, variant: 'destructive' }))
+                }}
+              >
+                {!post.liked && <HeartIcon />}
+                {post.liked && <HeartIcon fill='red' color='red' />}
+              </div>
+              <div><MessageCircleIcon rotate={'180deg'} /></div>
+              <div>
+                <ButtonShare
+                  url={`/posts/${post._id}`}
+                  content={post.content}
+                  hashtag={post.hashtags?.join(', ')}
+                />
+              </div>
+            </div>
             <div>
-              <ButtonShare
-                url={`/posts/${post._id}`}
-                content={post.content}
-                hashtag={post.hashtags?.join(', ')}
-              />
+              <BookmarkIcon />
             </div>
           </div>
-          <div>
-            <BookmarkIcon />
-          </div>
-        </div>
-        <div className='flex flex-col w-full  text-xs md:text-sm mt-2'>
-          {post.likes && post.likes?.length > 0 &&
-            <div className='space-x-2'>
-              <span >Likes</span>
-              <span className='font-bold'>{post.likes?.length}</span>
+          <div className='flex flex-col w-full  text-xs md:text-sm mt-2'>
+            {post.likeCount! > 0 &&
+              <div className='space-x-2'>
+                <span >Likes</span>
+                <span className='font-bold'>{post.likeCount}</span>
+              </div>
+            }
+            <div>
+              <span>comments</span>
+              <span>{post.commentCount}</span>
             </div>
-          }
-          <div>
-            <span>comments</span>
-            <span>{post.comments?.length}</span>
           </div>
-        </div>
-      </CardFooter>
-    </Card>
+        </CardFooter>
+      </Card>
+    }
   </>)
 }

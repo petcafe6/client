@@ -60,7 +60,7 @@ export function relativeTime(date?: string | any) {
   const rtf = new Intl.RelativeTimeFormat('default', { style: 'short' })
   const t = new Date(date)
   let diff = Math.round(new Date().getTime() / 1000) - Math.round(t.getTime() / 1000)
-
+  if (!date) return 'date-err'
   if (diff < 60) {
     return rtf.format(diff * -1, 'seconds')
   } else if (diff >= 60 && diff < 3600) {

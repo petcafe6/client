@@ -6,24 +6,23 @@ import { useRouter } from 'next/navigation'
 import Cookies from 'js-cookie'
 import { PostType } from '@/types/PostType'
 import { useToast } from '@/components/ui/use-toast'
+import { PostView } from '../(components)/post-view'
 
-import Loading from '@/components/loading'
-import { relativeTime, s3ImageUrl } from '@/lib/utils'
-import { PostView } from '../../(components)/post-view'
 interface Props {
 }
-export default function MyPostList({ }: Props) {
+export function Feeds({ }: Props) {
   const [list, setList] = useState<PostType[]>([])
   const [token, setToken] = useState('')
   const { toast } = useToast()
   const [loading, setLoading] = useState(false)
+  const [pageNo, setPageNo] = useState(1)
   const router = useRouter()
 
   const load = () => {
     setLoading(true)
-    getItem(`/myPosts`, token)
+    getItem(`/posts?page=${pageNo}`, token)
       .then(result => {
-        console.log(`result:`, result)
+        setPageNo(result.page || 1)
         setList(result.docs as PostType[])
       })
       .catch(err => toast({ title: 'Error', description: err || '', variant: 'destructive' }))
@@ -34,19 +33,8 @@ export default function MyPostList({ }: Props) {
   useEffect(() => { token && load() }, [token])
 
   return (<>
-    {!loading &&
-      <div className='flex flex-col w-full gap-4'>
-        {list && list.map(e =>
-          <div key={e._id}>
-            <PostView value={e} editable />
-          </div>
-        )}
-      </div>
-    }
-    {loading &&
-      <div className='flex flex-auto justify-center items-center min-h-[300px]'>
-        <Loading />
-      </div>
-    }
+    <div className="space-y-8 mt-0">
+      {list.map(e => <PostView key={e._id} value={e} />)}
+    </div>
   </>)
 }
