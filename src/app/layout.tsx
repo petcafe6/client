@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next"
 import { Inter } from "next/font/google"
-import "@fortawesome/fontawesome-free/css/all.min.css"
+// import "@fortawesome/fontawesome-free/css/all.min.css"
 import "./globals.css"
 import LayoutClientSide from './layout-client'
 import { ThemeProvider } from '@/components/theme-provider'

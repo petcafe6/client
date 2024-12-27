@@ -16,7 +16,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^6.6.0",
     "@mdx-js/loader": "^3.0.1",
     "@mdxeditor/editor": "^3.10.1",
     "@next/mdx": "^14.2.5",
@@ -50,6 +49,7 @@
     "next": "14.2.5",
     "next-auth": "^5.0.0-beta.20",
     "next-pwa": "^5.6.0",
+    "next-share": "^0.27.0",
     "next-themes": "^0.3.0",
     "nodemailer": "^6.9.14",
     "react": "^18",

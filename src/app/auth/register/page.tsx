@@ -17,6 +17,7 @@ import { postItem } from '@/lib/fetch'
 import { useRouter } from 'next/navigation'
 import Cookies from 'js-cookie'
 import { useToast } from "@/components/ui/use-toast"
+import { CheckIcon } from 'lucide-react'
 
 
 
@@ -120,7 +121,7 @@ const RegisterPage = () => {
                   onClick={registerWithEmailPassword}
                   title='register'
                 >
-                  <i className="text-2xl fa-solid fa-check"></i>
+                  <CheckIcon />
                 </Button>
               </div>
             </div>

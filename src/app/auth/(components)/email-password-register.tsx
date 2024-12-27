@@ -7,6 +7,7 @@ import { postItem } from '@/lib/fetch'
 import { useRouter } from 'next/navigation'
 import Cookies from 'js-cookie'
 import { useToast } from "@/components/ui/use-toast"
+import { UserPlus2Icon } from 'lucide-react'
 
 interface EMailPasswordRegisterProps {
   // email?: string,
@@ -114,7 +115,7 @@ export default function EMailPasswordRegister({
           onClick={registerWithEmailPassword}
           title='register'
         >
-          <i className="text-xl fa-solid fa-user-plus"></i>
+          <UserPlus2Icon />
         </Button>
       </div>
     </div>

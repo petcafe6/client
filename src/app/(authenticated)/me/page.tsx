@@ -12,16 +12,15 @@ import { getItem } from '@/lib/fetch'
 import CustomLink from '@/components/custom-link'
 import Cookies from 'js-cookie'
 import { UserType } from '@/types/UserType'
-import { BookmarkIcon, Edit, EditIcon, Grid3x3Icon, SettingsIcon, TagIcon, TagsIcon } from 'lucide-react'
+import { BookmarkIcon, Edit, EditIcon, Grid3x3Icon, PawPrintIcon, SettingsIcon, TagIcon, TagsIcon } from 'lucide-react'
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs"
-import { Card, CardHeader, CardTitle } from '@/components/ui/card'
 import { MyPetList } from './pets/my-pet-list'
-import { MyPostList } from './posts/my-post-list'
+import MyPostList from './posts/page'
 
 export default function MePage() {
   const [token, setToken] = useState('')
@@ -92,7 +91,7 @@ export function MeTabs() {
       <TabsList className="grid w-full grid-cols-4 gap-2">
 
         <TabsTrigger value="posts"><Grid3x3Icon /></TabsTrigger>
-        <TabsTrigger value="pets"><i className="fa-solid fa-paw text-xl"></i></TabsTrigger>
+        <TabsTrigger value="pets"><PawPrintIcon /></TabsTrigger>
         <TabsTrigger value="bookmarks"><BookmarkIcon /></TabsTrigger>
         <TabsTrigger value="tagged"><TagIcon /></TabsTrigger>
       </TabsList>
@@ -105,6 +104,14 @@ export function MeTabs() {
         <h3>My Pets</h3>
         <Button onClick={() => router.push('/me/pets/addnew')}>Yeni Pet</Button>
         <MyPetList />
+      </TabsContent>
+      <TabsContent value="bookmarks">
+        <h3>bookmarks</h3>
+        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptate fuga ducimus odio, animi autem nihil itaque repudiandae, porro voluptas magnam quae voluptates ex tenetur a, consequatur eos. Suscipit, rerum harum!</p>
+      </TabsContent>
+      <TabsContent value="tagged">
+        <h3>tagged</h3>
+        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Facere animi ad aperiam quae corrupti nam molestias omnis nihil ullam nesciunt enim sit, deleniti voluptates sunt reprehenderit delectus asperiores vel cumque.</p>
       </TabsContent>
     </Tabs>
   )

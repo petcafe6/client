@@ -19,6 +19,7 @@ import Loading from '@/components/loading'
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp'
 import { REGEXP_ONLY_DIGITS } from 'input-otp'
 import { useState } from 'react'
+import { CheckCheckIcon } from 'lucide-react'
 
 
 
@@ -72,7 +73,7 @@ const VerifyPage = () => {
               onClick={verify}
               title='register'
             >
-              <i className="text-2xl fa-solid fa-check-double"></i>
+              <CheckCheckIcon />
             </Button>
           </div>
           <p className="w-full mt-6 text-start text-sm text-muted-foreground ">

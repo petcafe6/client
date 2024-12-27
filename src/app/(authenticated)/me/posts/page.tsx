@@ -9,10 +9,10 @@ import { useToast } from '@/components/ui/use-toast'
 
 import Loading from '@/components/loading'
 import { relativeTime, s3ImageUrl } from '@/lib/utils'
-import { PostView } from './post-view'
+import { PostView } from '../../(components)/post-view'
 interface Props {
 }
-export function MyPostList({ }: Props) {
+export default function MyPostList({ }: Props) {
   const [list, setList] = useState<PostType[]>([])
   const [token, setToken] = useState('')
   const { toast } = useToast()

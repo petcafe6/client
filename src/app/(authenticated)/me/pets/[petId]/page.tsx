@@ -58,7 +58,7 @@ export default function PetPage({ params }: Props) {
   return (<>
     {!loading &&
       <div className='flex flex-col w-full gap-4 relative min-h-[80vh] pb-16'>
-        {params.petId == 'addnew' && <h2><i className="fa-solid fa-paw"></i> Add New Pet</h2>}
+        {params.petId == 'addnew' && <h2>myPets Add New Pet</h2>}
         <div className='max-w-xl'>
           <Label>Name</Label>
           <Input defaultValue={pet.name} onChange={e => setPet({ ...pet, name: e.target.value })} />

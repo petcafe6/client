@@ -8,9 +8,11 @@ export interface PostType {
   location?: string
   likes?: UserType[]
   comments?: CommentType[]
-  hashTags?: string[]
+  hashtags?: string[]
   mentions?: UserType[]
   createdAt?: string
+
+  liked?: boolean
 }
 
 export interface CommentType {

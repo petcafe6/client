@@ -55,12 +55,11 @@ const LoginPage = () => {
           <div className='flex flex-col mb-4'>
             <div className='grid grid-cols-2  rounded-lg border border-dashed border-opacity-50 border-slate-400 p-4 '>
               <SSOSignIn className='w-full flex justify-center items-center' provider='google' variant={'outline'}>
-                <i className="text-xl fa-brands fa-google me-2"></i>
+
                 Google
               </SSOSignIn>
 
               <SSOSignIn className='w-full flex justify-center items-center ' provider='yandex' variant={'outline'}>
-                <i className="text-xl fa-brands fa-yandex me-2"></i>
                 Yandex
               </SSOSignIn>
 

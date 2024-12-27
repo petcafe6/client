@@ -14,8 +14,9 @@ interface Props {
   // images?: string[]
   defaultValue?: string[]
   onChange?: (e: string[]) => void
+  editMode?: boolean
 }
-export function ImageGallery({ defaultValue, onChange }: Props) {
+export function ImageGallery({ defaultValue, onChange, editMode }: Props) {
   const [images, setImages] = useState<string[]>(defaultValue || [])
   const [token, setToken] = useState('')
   const { toast } = useToast()
@@ -41,7 +42,7 @@ export function ImageGallery({ defaultValue, onChange }: Props) {
     }
   }
 
-  const AddNewButton = () => {
+  const UploadImageButton = () => {
     return (<>
       <label
         htmlFor="file-upload"
@@ -83,9 +84,14 @@ export function ImageGallery({ defaultValue, onChange }: Props) {
 
   return (<>
     <div className='flex flex-col gap-2'>
-      <div className='w-full h-full flex flex-1 justify-center items-center'>
-        <AddNewButton />
-      </div>
+      {/* duzeltme isleminde yeni image eklenemez. */}
+      {/* sebep: eski fotoya begeni yapmis olanlarin kullanim tercihlerini korumak. */}
+      {/* Yeni image kotu niyetli olabilir. */}
+      {!editMode &&
+        <div className='w-full h-full flex flex-1 justify-center items-center'>
+          <UploadImageButton />
+        </div>
+      }
       <div className='grid grid-cols-2 gap-2'>
         {images && images.map((e, index) =>
           <div key={`image-${index}`} className='p-1 relative'>

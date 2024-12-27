@@ -6,6 +6,7 @@ import { ButtonConfirm } from '@/components/button-confirm'
 import { Button } from "@/components/ui/button"
 // import { authSignOut } from '@/lib/authHelper'
 import Cookies from 'js-cookie'
+import { PowerSquareIcon } from 'lucide-react'
 // import { cookies } from 'next/headers'
 import { useRouter } from 'next/navigation'
 interface SignOutButtonProps {
@@ -32,7 +33,7 @@ export default function SignOutButton({ className = '', title = 'Exit' }: SignOu
         }
       }}
     >
-      <i className='fa-solid fa-power-off'></i>
+      <PowerSquareIcon />
     </Button>
   )
 }

@@ -2,7 +2,6 @@
 
 import * as React from "react"
 
-import { Card, CardContent } from "@/components/ui/card"
 import {
   Carousel,
   CarouselContent,
@@ -19,25 +18,19 @@ interface Props {
 export function ImageCarousel({ images }: Props) {
   return (<>
     {images &&
-      <Carousel className="w-full ma11x-w-xs"
-        opts={{
-
-        }}
-
+      <Carousel className="w-full max-w-lg"
       >
         <CarouselContent className='deneme' >
-          {/* {Array.from({ length: 5 }).map((_, index) => ( */}
           {images.map((e, index) => (
             <CarouselItem key={`carousel-${index}`} className='p-0'>
-              {/* <div className="p-1"> */}
               <Image
+                priority
                 src={s3ImageUrl(e, 800)}
                 width={800}
                 height={800}
                 className='aspect-square object-cover'
                 alt='post-image'
               />
-              {/* </div> */}
             </CarouselItem>
           ))}
         </CarouselContent>

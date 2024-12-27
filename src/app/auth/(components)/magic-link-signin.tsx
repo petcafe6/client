@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input'
 import { postItem } from '@/lib/fetch'
 import { useRouter } from 'next/navigation'
 import Cookies from 'js-cookie'
+import { MailIcon } from 'lucide-react'
 
 interface MagicLinkSignInProps {
   // email?: string,
@@ -59,7 +60,7 @@ export default function MagicLinkSignIn({
       <Button className={`col-span-2`} variant={variant || 'default'}
         onClick={loginWithMagicLink}
       >
-        <i className="text-xl fa-regular fa-envelope"></i>
+        <MailIcon />
       </Button>
     </div>
   )

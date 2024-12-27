@@ -6,6 +6,7 @@ import { postItem } from '@/lib/fetch'
 import { useRouter } from 'next/navigation'
 import Cookies from 'js-cookie'
 import { useToast } from "@/components/ui/use-toast"
+import { LogInIcon } from 'lucide-react'
 
 interface EMailPasswordSignInProps {
   // email?: string,
@@ -67,7 +68,7 @@ export default function EMailPasswordSignIn({
         <Button className={`col-span-2`} variant={variant || 'default'}
           onClick={loginWithEmailPassword}
         >
-          <i className="text-xl fa-solid fa-right-to-bracket"></i>
+          <LogInIcon />
         </Button>
       </div>
     </div>
