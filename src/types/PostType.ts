@@ -16,7 +16,9 @@ export interface PostType {
 }
 
 export interface CommentType {
-  user?: UserType
+  _id?: string
+  post?: PostType
+  commentBy?: UserType
   text?: string
   createdAt?: string
 }

@@ -9,6 +9,7 @@ import { useToast } from '@/components/ui/use-toast'
 import { PostView } from '../../(components)/post-view'
 import { relativeTime } from '@/lib/utils'
 import Loading from '@/components/loading'
+import { Input } from '@/components/ui/input'
 
 interface Props {
   params: {

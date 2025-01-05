@@ -21,6 +21,7 @@ import { relativeTime, s3ImageUrl } from '@/lib/utils'
 import { ImageCarousel } from './image-carousel'
 import { ButtonShare } from '@/components/button-share'
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
+import Link from 'next/link'
 
 interface Props {
   value: PostType
@@ -42,7 +43,7 @@ export function PostView({ value, editable }: Props) {
         <CardHeader className='pb-2 px-4'>
           <div className='flex justify-start items-center space-x-4'>
             <Avatar className="h-12 w-12">
-              <AvatarImage src={post.author?.profilePicture || '/placeholder-user.jpg'} alt="profilePicture" />
+              <AvatarImage src={s3ImageUrl(post.author?.profilePicture) || '/placeholder-user.jpg'} alt="profilePicture" />
             </Avatar>
             <div className='flex flex-col'>
               <div>{post.author?.name}</div>
@@ -79,7 +80,7 @@ export function PostView({ value, editable }: Props) {
             <div className='flex justify-start gap-4'>
               <div className='cursor-pointer'
                 onClick={() => {
-                  postItem(`/posts/like/${post._id}`, token, {})
+                  postItem(`/posts/${post._id}/like`, token, {})
                     .then(result => {
                       setPost(result as PostType)
                     })
@@ -89,7 +90,11 @@ export function PostView({ value, editable }: Props) {
                 {!post.liked && <HeartIcon />}
                 {post.liked && <HeartIcon fill='red' color='red' />}
               </div>
-              <div><MessageCircleIcon rotate={'180deg'} /></div>
+              <div>
+                <Link href={`/comments/${post._id}`} >
+                  <MessageCircleIcon rotate={'180deg'} />
+                </Link>
+              </div>
               <div>
                 <ButtonShare
                   url={`/posts/${post._id}`}
@@ -109,10 +114,16 @@ export function PostView({ value, editable }: Props) {
                 <span className='font-bold'>{post.likeCount}</span>
               </div>
             }
-            <div>
-              <span>comments</span>
-              <span>{post.commentCount}</span>
-            </div>
+            {post.commentCount! > 0 &&
+              <Link className='flex gap-1 text-muted-foreground'
+                href={`/comments/${post._id}`}
+              >
+                <span>View all</span>
+                <span>{post.commentCount}</span>
+                <span>comments</span>
+              </Link>
+            }
+
           </div>
         </CardFooter>
       </Card>

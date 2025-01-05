@@ -33,7 +33,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
         <link rel="icon" href={`/img/icon.svg`} type="image/svg+xml" />
         <link rel="manifest" href={`/manifest.json`} />
       </head>
-      <body className={inter.className} suppressHydrationWarning >
+      <body className={`${inter.className} overfl11ow-hidden`} suppressHydrationWarning >
 
         <LayoutClientSide />
         <ThemeProvider

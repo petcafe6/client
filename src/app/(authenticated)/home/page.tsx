@@ -62,7 +62,7 @@ function Feed_eski() {
   const roter = useRouter()
 
   return (
-    <div className="space-y-8 mt-8">
+    <div className="space-y-8 mt-8 overflow-y-auto">
       {posts.map((post) => (
         <Card key={post.id} className='bg-transparent'>
           <CardHeader className="flex flex-row items-center gap-4">
