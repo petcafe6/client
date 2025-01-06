@@ -75,7 +75,7 @@ export function PostView({ value, editable }: Props) {
           {post.images && post.images.length > 0 && <ImageCarousel images={post.images} />}
 
         </CardContent>
-        <CardFooter className='flex flex-col'>
+        <CardFooter className='flex flex-col pb-3'>
           <div className='flex justify-between items-center w-full'>
             <div className='flex justify-start gap-4'>
               <div className='cursor-pointer'
@@ -107,23 +107,26 @@ export function PostView({ value, editable }: Props) {
               <BookmarkIcon />
             </div>
           </div>
-          <div className='flex flex-col w-full  text-xs md:text-sm mt-2'>
-            {post.likeCount! > 0 &&
-              <div className='space-x-2'>
-                <span >Likes</span>
-                <span className='font-bold'>{post.likeCount}</span>
-              </div>
-            }
-            {post.commentCount! > 0 &&
-              <Link className='flex gap-1 text-muted-foreground'
-                href={`/comments/${post._id}`}
-              >
-                <span>View all</span>
-                <span>{post.commentCount}</span>
-                <span>comments</span>
-              </Link>
-            }
-
+          <div className='flex justify-between items-center w-full  text-xs md:text-sm mt-6'>
+            <div>
+              {post.likeCount! > 0 &&
+                <Link className='space-x-2' href={`/posts/${post._id}/likedUsers`}>
+                  <span >Likes</span>
+                  <span className='font-bold'>{post.likeCount}</span>
+                </Link>
+              }
+            </div>
+            <div>
+              {post.commentCount! > 0 &&
+                <Link className='flex gap-1 text-muted-foreground'
+                  href={`/comments/${post._id}`}
+                >
+                  <span>View all</span>
+                  <span>{post.commentCount}</span>
+                  <span>comments</span>
+                </Link>
+              }
+            </div>
           </div>
         </CardFooter>
       </Card>

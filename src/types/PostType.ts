@@ -22,3 +22,10 @@ export interface CommentType {
   text?: string
   createdAt?: string
 }
+
+export interface LikeType {
+  _id?: string
+  post?: PostType
+  likedBy?: UserType
+  createdAt?: string
+}
