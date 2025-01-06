@@ -35,6 +35,23 @@ export function PostView({ value, editable }: Props) {
   const router = useRouter()
 
 
+  const likePost = () => {
+    postItem(`/posts/${post._id}/like`, token, {})
+      .then(result => {
+        setPost(result as PostType)
+      })
+      .catch(err => toast({ description: err || '', duration: 1000, variant: 'destructive' }))
+  }
+
+  const savePost = () => {
+    postItem(`/posts/${post._id}/save`, token, {})
+      .then(result => {
+        setPost(result as PostType)
+        console.log(`result:`, result)
+      })
+      .catch(err => toast({ description: err || '', duration: 1000, variant: 'destructive' }))
+  }
+
   useEffect(() => { !token && setToken(Cookies.get('token') || '') }, [])
 
   return (<>
@@ -78,15 +95,7 @@ export function PostView({ value, editable }: Props) {
         <CardFooter className='flex flex-col pb-3'>
           <div className='flex justify-between items-center w-full'>
             <div className='flex justify-start gap-4'>
-              <div className='cursor-pointer'
-                onClick={() => {
-                  postItem(`/posts/${post._id}/like`, token, {})
-                    .then(result => {
-                      setPost(result as PostType)
-                    })
-                    .catch(err => toast({ description: err || '', duration: 1000, variant: 'destructive' }))
-                }}
-              >
+              <div className='cursor-pointer' onClick={likePost}>
                 {!post.liked && <HeartIcon />}
                 {post.liked && <HeartIcon fill='red' color='red' />}
               </div>
@@ -103,9 +112,11 @@ export function PostView({ value, editable }: Props) {
                 />
               </div>
             </div>
-            <div>
-              <BookmarkIcon />
+            <div className='cursor-pointer' onClick={savePost}>
+              {!post.saved && <BookmarkIcon />}
+              {post.saved && <BookmarkIcon fill='orange' color='orange' />}
             </div>
+
           </div>
           <div className='flex justify-between items-center w-full  text-xs md:text-sm mt-6'>
             <div>

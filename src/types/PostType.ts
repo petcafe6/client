@@ -13,6 +13,7 @@ export interface PostType {
   createdAt?: string
 
   liked?: boolean
+  saved?: boolean
 }
 
 export interface CommentType {
