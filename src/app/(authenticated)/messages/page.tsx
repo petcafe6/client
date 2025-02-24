@@ -43,14 +43,14 @@ export default function ConversationPage() {
     {!loading &&
       <div className='flex flex-col gap-4'>
         {list && list.map((e, index) =>
-          <div key={e._id} className='flex justify-start items-center space-x-4'>
+          <Link key={e._id} href={`/messages/${e._id}`} className='flex justify-start items-center space-x-4'>
             <Avatar className="h-12 w-12">
               <AvatarImage src={s3ImageUrl(e.user?.profilePicture) || '/placeholder-user.jpg'} alt="profilePicture" />
             </Avatar>
             <div className='flex flex-col'>
               <div>{e.user?.name}</div>
             </div>
-          </div>
+          </Link>
         )}
 
       </div>

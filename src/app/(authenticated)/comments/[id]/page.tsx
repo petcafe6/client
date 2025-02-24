@@ -15,6 +15,7 @@ import { Button } from '@/components/ui/button'
 import { HeartIcon, ReplyIcon, SendHorizontalIcon, SmileIcon } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
+import { MsgBox } from '../../(components)/msg-box'
 
 interface Props {
   params: {
@@ -27,20 +28,20 @@ export default function CommentsPage({ params }: Props) {
   const { toast } = useToast()
   const [loading, setLoading] = useState(false)
   const router = useRouter()
-  const [comment, setComment] = useState<CommentType>({})
+  // const [comment, setComment] = useState<CommentType>({})
 
   function focusComment() {
     document.getElementById('txtComment')?.focus()
   }
 
-  const sendComment = () => {
-    if (comment.text?.trim() == '') return
+  const sendComment = (comment?: string) => {
+    // if (comment.text?.trim() == '') return
     setLoading(true)
-    postItem(`/posts/${params.id}/addNewComment`, token, comment)
+    postItem(`/posts/${params.id}/addNewComment`, token, { text: comment })
       .then(result => {
         list.unshift(result as CommentType)
         setList(list)
-        setComment({ text: '' })
+        // setComment({ text: '' })
       })
       .catch(err => toast({ title: 'Error', description: err || '', variant: 'destructive' }))
       .finally(() => {
@@ -105,32 +106,7 @@ export default function CommentsPage({ params }: Props) {
         }
       </div>
       <div className='absolute bottom-[-10px] flex w-full'>
-        <div className='relative w-full h-full'>
-          {/* {!loading && */}
-          <Textarea
-            id='txtComment'
-            value={comment.text}
-            className='pe-14'
-            placeholder={`Add your comment here...`}
-            onChange={e => {
-              setComment({ ...comment, text: e.target.value })
-            }}
-          />
-          {/* }
-          {loading && <>
-            <Skeleton className='w-full h-20 bg-slate-600' />
-          </>} */}
-          <div className='absolute right-0 top-0 flex flex-col'>
-            {/* TODO: emoji popup */}
-            <Button variant={'ghost'} >
-              <SmileIcon />
-            </Button>
-            <Button variant={'ghost'} onClick={sendComment}>
-              <SendHorizontalIcon />
-            </Button>
-          </div>
-
-        </div>
+        <MsgBox onSend={e => sendComment(e)} />
       </div>
     </div>
   </>)

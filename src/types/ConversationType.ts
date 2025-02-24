@@ -19,4 +19,5 @@ export interface MessageType {
   media?: string[]
   isSystemMessage?: boolean
   isReadBy?: UserType[]
+  createdAt?: string
 }
